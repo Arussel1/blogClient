@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; 
-import axios from 'axios'; 
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+
+interface BackendError {
+  msg: string;
+}
 
 function Signup() {
   const [firstname, setFirstname] = useState('');
@@ -8,19 +12,19 @@ function Signup() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmpassword] = useState('');
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const handleSignup = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (password !== confirmpassword) {
-      setError('Passwords do not match.');
+      setErrors(['Passwords do not match.']);
       return;
     }
 
     try {
-    await axios.post(`${import.meta.env.VITE_BACKEND_WEB}/api/users/signup`, {
+      await axios.post(`${import.meta.env.VITE_BACKEND_WEB}/api/users/signup`, {
         firstname,
         lastname,
         username,
@@ -31,11 +35,11 @@ function Signup() {
       navigate('/');
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log('Error Response:', err.response?.data.errors);
-        setError(err.response?.data.message || 'Signup failed. Please check your credentials.');
+        const errorMessages = err.response?.data.errors.map((error: BackendError) => error.msg) || ['Signup failed. Please check your credentials.'];
+        setErrors(errorMessages);
       } else {
         console.error('Unexpected Error:', err);
-        setError('An unexpected error occurred. Please try again.');
+        setErrors(['An unexpected error occurred. Please try again.']);
       }
     }
   };
@@ -83,7 +87,13 @@ function Signup() {
         required
       />
       <button type="submit">Sign Up</button>
-      {error && <p>{error}</p>}
+      {errors.length > 0 && (
+        <div>
+          {errors.map((error, index) => (
+            <p key={index} style={{ color: 'red' }}>{error}</p>
+          ))}
+        </div>
+      )}
       <p>
         Already have an account? <Link to="/">Login here</Link>
       </p>

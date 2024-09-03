@@ -2,7 +2,7 @@ import { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import type { Post } from './Posts';
-
+import NavigationBar from '../Navigation';
 interface Comment {
   id: number;
   content: string;
@@ -91,6 +91,7 @@ const Post = () => {
 
   return (
     <div className="post-detail">
+      <NavigationBar/>
       {post && (
         <>
           <h1>{post.title}</h1>

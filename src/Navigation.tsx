@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 
 interface DecodedToken {
   id: string;
@@ -27,6 +28,8 @@ const getUserFromToken = () => {
 const NavigationBar = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [dropdownVisible, setDropdownVisible] = useState(false); 
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -60,14 +63,51 @@ const NavigationBar = () => {
     fetchUser();
   }, []);
 
-  if (loading) return null; 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    navigate('/'); 
+  };
 
+  const toggleDropdown = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+  const handleProfileNavigation = () => {
+    if (user) {
+      const decodedToken = getUserFromToken();
+      if (decodedToken) {
+        navigate(`/users/${decodedToken.id}`);
+      }
+    }
+  };
+  const handlePostsNavigation = () => {
+    if (user) {
+      navigate('/posts')
+    }
+  };
+
+  if (loading) return null;
   if (!localStorage.getItem('token')) return null;
 
   return (
     <div>
-      <img src="/blogLogo.png" alt="blogLogo" />
-      {user ? <p>{user.firstname} {user.lastname}</p> : <p>Loading user data...</p>}
+      <img className='mix-blend-multiply' src="/blogLogo.png" alt="Blog Logo" />
+      {user ? (
+        <div>
+          <button onClick={handlePostsNavigation}>Posts</button>
+          <button onClick={toggleDropdown}>
+            {user.firstname} {user.lastname}
+          </button>
+          {dropdownVisible && (
+            <ul style={{ position: 'absolute', backgroundColor: 'white', border: '1px solid #ccc', padding: '10px' }}>
+              <li onClick={handleProfileNavigation} style={{ cursor: 'pointer' }}>Profile</li>
+              <li onClick={handleLogout} style={{ cursor: 'pointer' }}>Log Out</li>
+            </ul>
+          )}
+        </div>
+      ) : (
+        <p>Loading user data...</p>
+      )}
     </div>
   );
 };

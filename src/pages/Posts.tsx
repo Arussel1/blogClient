@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import NavigationBar from '../Navigation';
 export interface Post {
   id: number;
   title: string;
@@ -60,6 +60,7 @@ const Posts = () => {
 
   return (
     <div className="posts">
+      <NavigationBar/>
       <h1>Published Posts</h1>
       {posts.length > 0 ? (
         posts.map((post: Post) => (
