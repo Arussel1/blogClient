@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import type { Post } from './Posts';
 import NavigationBar from '../Navigation';
+import DOMPurify from 'dompurify';
 interface Comment {
   id: number;
   content: string;
@@ -104,7 +105,10 @@ const Post = () => {
             alt="Post image"
             className="w-full h-60 object-cover rounded-lg mb-4"
           />
-          <p className="text-gray-800">{post.content}</p>
+          <div
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+                  className="text-gray-800 mb-2 "
+                />
         </div>
       )}
       <div className="bg-white p-6 rounded-lg shadow-md">

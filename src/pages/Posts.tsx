@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import NavigationBar from '../Navigation';
+import DOMPurify from 'dompurify';
 export interface Post {
   id: number;
   title: string;
@@ -54,7 +55,13 @@ const Posts = () => {
 
     fetchPosts();
   }, [navigate]);
-
+  const truncateToWords = (text:string, maxWords: number) => {
+    const words = text.split(/\s+/); 
+    if (words.length > maxWords) {
+      return words.slice(0, maxWords).join(' ') + '...'; 
+    }
+    return text;
+  };
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -81,7 +88,10 @@ const Posts = () => {
                     alt={post.title}
                     className="w-full h-48 object-cover rounded-lg mb-4"
                   />
-                  <p className="text-gray-800">{post.content}</p>
+                  <div
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(truncateToWords(post.content,30)) }}
+                  className="text-gray-800 mb-2 text-left"
+                />
                 </div>
               </button>
             ))}
