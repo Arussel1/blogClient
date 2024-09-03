@@ -1,50 +1,58 @@
-# React + TypeScript + Vite
+# Blog API
+Client for [BlogAPI](https://github.com/Arussel1/blogAPI) of a blog website with Typescript, React, and TailwindCSS.  <br>
+**Demo**: :point_right:[**Not yet ready**]():point_left:. <br>
+Please allow up to 1 minutes for the website to load.
+## Install and set up
+Follow these step below to set up the website in your local machine.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Steps:
+1. Clone the repo: <br>
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone https://github.com/YourUserName/blogClient
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Navigate to the project folder:<br>
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+cd blogClient
 ```
+
+3. Install the dependencies:<br>
+
+```bash
+npm install
+```
+
+4. Create the .env file:<br>
+
+```bash
+touch .env
+```
+
+5. Add your environment inside the file: <br>
+
+```bash
+VITE_BACKEND_WEB=
+```
+
+6. Start the dev server:<br>
+
+```bash
+npm run dev
+```
+
+
+After these step, you should browser and navigate to http://localhost:5173 to view the application in action.
+## Production:
+
+To prepare the project for production deployment, please use the following command: <br>
+
+```bash
+npm run build
+```
+## Tech stack:
++ [React](https://react.dev/): as runtime environment. <br>
++ [TailwindCSS](https://tailwindcss.com/): Utility-first CSS framework for styling. <br>
++ [Typescript](https://www.typescriptlang.org/): Strongly-typed programming language for building robust applications. <br>
++ [Axios](https://axios-http.com/): Promise-based HTTP client for making API requests.
