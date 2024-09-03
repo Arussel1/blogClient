@@ -39,6 +39,7 @@ const Profile = () => {
 
       if (!userId) {
         setLoading(false);
+        navigate('/');
         return;
       }
 
@@ -55,13 +56,14 @@ const Profile = () => {
         });
       } catch (error) {
         console.error('Failed to fetch user data:', error);
+        navigate('/'); // Navigate away if fetching fails
       } finally {
         setLoading(false);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   const handleChangeNavigate = () => {
     if (user) {
@@ -89,18 +91,31 @@ const Profile = () => {
     }
   };
 
-
   if (loading) return <p>Loading...</p>;
   if (!user) navigate('/');
 
   return (
     <div>
       <NavigationBar />
-      <p>Firstname: {user?.firstname}</p>
-      <p>Lastname: {user?.lastname}</p>
-      <p>Username: {user?.username}</p>
-      <button onClick={handleChangeNavigate}>Change Info</button>
-      <button onClick={handleDelete}>Delete User</button>
+      <div className="mt-8 mx-8">
+        <p><strong>Firstname:</strong> {user?.firstname}</p>
+        <p><strong>Lastname:</strong> {user?.lastname}</p>
+        <p><strong>Username:</strong> {user?.username}</p>
+      </div>
+      <div className="flex space-x-4 mt-8 mx-6">
+        <button 
+          onClick={handleChangeNavigate}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+        >
+          Change Info
+        </button>
+        <button 
+          onClick={handleDelete}
+          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition"
+        >
+          Delete User
+        </button>
+      </div>
     </div>
   );
 };

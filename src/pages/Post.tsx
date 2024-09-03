@@ -36,7 +36,7 @@ const Post = () => {
 
         if (response.data && response.data.post) {
           setPost(response.data.post);
-          setComments(response.data.comment || []);
+          setComments(response.data.comments || []);
         } else {
           setError('Post not found or is unpublished.');
         }
@@ -90,51 +90,58 @@ const Post = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="post-detail">
-      <NavigationBar/>
+    <div className="min-h-screen bg-gray-100">
+    <NavigationBar />
+    <div className="container mx-auto px-4 py-6">
       {post && (
-        <>
-          <h1>{post.title}</h1>
-          <p>
-            <em>
-              {post.authorName} at {new Date(post.createdAt).toLocaleDateString()}
-            </em>
+        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
+          <p className="text-gray-600 mb-4">
+            <em>{post.authorName} at {new Date(post.createdAt).toLocaleDateString()}</em>
           </p>
           <img
             src={post.image}
             alt="Post image"
-            style={{ width: '100%', maxHeight: '300px', objectFit: 'cover' }}
+            className="w-full h-60 object-cover rounded-lg mb-4"
           />
-          <p>{post.content}</p>
-        </>
+          <p className="text-gray-800">{post.content}</p>
+        </div>
       )}
-      <div className="comments-section">
-        <h2>Comments</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4">Comments</h2>
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <div key={comment.id} className="comment">
-              <p>
+            <div key={comment.id} className="border-b border-gray-300 pb-4 mb-4">
+              <p className="text-gray-600 mb-1">
                 <strong>{comment.authorName}</strong> at{' '}
-                {new Date(comment.createdAt).toLocaleDateString()}
+                {new Date(comment.createdAt).toLocaleString(undefined, {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})}
               </p>
-              <p>{comment.content}</p>
+              <p className="text-gray-800">{comment.content}</p>
             </div>
           ))
         ) : (
-          <p>No comments yet.</p>
+          <p className="text-gray-600">No comments yet.</p>
         )}
-        <form onSubmit={handleCommentSubmit} className="comment-form">
+        <form onSubmit={handleCommentSubmit} className="mt-6">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Write your comment..."
+            rows={4}
+            className="w-full p-2 border border-gray-300 rounded-lg mb-4"
             required
           />
-          <button type="submit">Submit Comment</button>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+          >
+            Submit Comment
+          </button>
         </form>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Post;

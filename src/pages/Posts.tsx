@@ -59,28 +59,37 @@ const Posts = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="posts">
-      <NavigationBar/>
-      <h1>Published Posts</h1>
-      {posts.length > 0 ? (
-        posts.map((post: Post) => (
-          <button
-            key={post.id}
-            onClick={() => navigate(`/posts/${post.id}`)}
-          >
-            <div className="post" >
-              <h2>{post.title}</h2>
-              <p>
-                {post.authorName} at {new Date(post.createdAt).toLocaleDateString()}
-              </p>
-              <img src={post.image} alt="Post image"  />
-              <p>{post.content}</p>
-            </div>
-          </button>
-        ))
-      ) : (
-        <p>No published posts available.</p>
-      )}
+    <div className="min-h-screen bg-gray-100">
+      <NavigationBar />
+      <div className="container mx-auto px-4 py-6">
+        <h1 className="text-3xl font-bold mb-6 text-center">Published Posts</h1>
+        {posts.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post: Post) => (
+              <button
+                key={post.id}
+                onClick={() => navigate(`/posts/${post.id}`)}
+                className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 w-full"
+              >
+                <div className="post">
+                  <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
+                  <p className="text-gray-600 mb-2">
+                    {post.authorName} at {new Date(post.createdAt).toLocaleDateString()}
+                  </p>
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-48 object-cover rounded-lg mb-4"
+                  />
+                  <p className="text-gray-800">{post.content}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-600">No published posts available.</p>
+        )}
+      </div>
     </div>
   );
 };
